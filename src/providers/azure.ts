@@ -53,7 +53,7 @@ export class AzureProvider implements Provider {
         permissions.create = true;
         permissions.write = true;
         fileName = await this.common.generateFileUniqueName(params.key);
-        key = `${params.prefix}/${fileName}`;
+        key = params.prefix ? `${params.prefix}/${fileName}` : fileName;
         break;
       case HttpMethod.DELETE:
         permissions.delete = true;
@@ -70,7 +70,7 @@ export class AzureProvider implements Provider {
     // Define SAS parameters
     const sasOptions = {
       containerName: this.containerName,
-      blobName: params.key,
+      blobName: key,
       permissions,
       startsOn: startDate,
       expiresOn: expiryDate,
@@ -90,7 +90,7 @@ export class AzureProvider implements Provider {
     
     // Construct the full URL
     const containerClient = this.blobServiceClient.getContainerClient(this.containerName);
-    const blobClient = containerClient.getBlobClient(fileName);
+    const blobClient = containerClient.getBlobClient(key);
     const presignedUrl = `${blobClient.url}?${sasToken}`;
     const url = blobClient.url.split('?')[0];
     
@@ -115,7 +115,7 @@ export class AzureProvider implements Provider {
     return response;
   }
 
-  async makeFilePublic(): Promise<void> {
+  async makeFilePublic(key?: string): Promise<void> {
     const containerClient = this.blobServiceClient.getContainerClient(this.containerName);
 
     // Check current access level

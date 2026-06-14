@@ -19,7 +19,7 @@ async function example() {
       contentType: 'text/plain',
     });
     
-    console.log('Upload URL:', uploadUrl.url);
+    console.log('Upload URL:', uploadUrl.presignedUrl);
     console.log('Upload URL expires at:', uploadUrl.expiresAt);
     console.log('Required headers:', uploadUrl.headers);
     
@@ -30,7 +30,7 @@ async function example() {
     
     // Example using fetch (in Node.js environment, use node-fetch)
     const fetch = require('node-fetch');
-    const response = await fetch(uploadUrl.url, {
+    const response = await fetch(uploadUrl.presignedUrl, {
       method: 'PUT',
       headers: {
         'Content-Type': 'text/plain',
@@ -47,12 +47,12 @@ async function example() {
       method: HttpMethod.GET,
     });
     
-    console.log('\nDownload URL:', downloadUrl.url);
+    console.log('\nDownload URL:', downloadUrl.presignedUrl);
     console.log('Download URL expires at:', downloadUrl.expiresAt);
     
     // Example: Download the file
     console.log('\nDownloading file using the presigned URL...');
-    const downloadResponse = await fetch(downloadUrl.url);
+    const downloadResponse = await fetch(downloadUrl.presignedUrl);
     const downloadedContent = await downloadResponse.text();
     
     console.log('Downloaded content:', downloadedContent);

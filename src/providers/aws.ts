@@ -50,7 +50,7 @@ export class AwsProvider implements Provider {
     const expiration = options?.expiration || this.defaultExpiration;
     const method = params.method || HttpMethod.GET;
     const fileName = await this.common.generateFileUniqueName(params.key)
-    const key = `${params.prefix}/${fileName}`;
+    const key = params.prefix ? `${params.prefix}/${fileName}` : fileName;
     // Define command based on HTTP method
     let command;
     switch (method) {

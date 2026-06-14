@@ -48,7 +48,7 @@ export class GcpProvider implements Provider {
       case HttpMethod.PUT:
       case HttpMethod.POST:
         fileName = await this.common.generateFileUniqueName(params.key);
-        key = `${params.prefix}/${fileName}`;
+        key = params.prefix ? `${params.prefix}/${fileName}` : fileName;
         action = 'write';
         break;
       case HttpMethod.DELETE:
